@@ -6,11 +6,12 @@
 
 <body>
 <h2>Authorization</h2>
+<?= getErrorsHtml() ?>
 
 <form action="ajax/loginPost" method="POST">
     <p>
         <label for="login">Inter Login:<br></label>
-        <input id="login" name="login" type="text">
+        <input id="login" name="login" type="text" value="<?=getPostFields('postLogin')?>">
     </p>
     <p>
         <label for="password">Inter password:<br></label>

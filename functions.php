@@ -1,5 +1,7 @@
 <?php
 
+use Connection\MysqliConnection;
+
 function isPost(): bool {
 
     return $_SERVER['REQUEST_METHOD'] === 'POST';
@@ -33,7 +35,15 @@ function getErrorsHtml(): string
     return sprintf($containerTmpl, $buffer);
 
 }
+function selectFields(string $field, string $postField): bool {
+    $selectField = MysqliConnection::getInstance()->query(
+        sprintf('SELECT id FROM %s WHERE %s= "%s"', 'User',
+            $field, (string)$postField)
+    );
+    $fieldId = $selectField->fetch_array();
+    return empty(($fieldId['id']));
 
+}
 function getPostFields(string $post): string
 {
     if (empty($_SESSION[$post])){

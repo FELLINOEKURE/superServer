@@ -37,21 +37,13 @@ if (!filter_var($mail, FILTER_VALIDATE_EMAIL)){
     $_SESSION['errors'][] = 'Invalid email format';
     redirect('/register');
 }
-$selectLogin = MysqliConnection::getInstance()->query(
-    sprintf('SELECT id FROM %s WHERE %s= "%s"', 'User',
-        'login', (string)$login)
-);
-$loginId = $selectLogin->fetch_array();
-if (!empty($loginId['id'])){
+
+if (!selectFields('login',$login)){
     $_SESSION['errors'][] = 'Login is registered';
     redirect('/register');
 }
-$selectMail = MysqliConnection::getInstance()->query(
-    sprintf('SELECT id FROM %s WHERE %s= "%s"', 'User',
-        'mail', (string)$mail)
-);
-$mailId = $selectMail->fetch_array();
-if (!empty($mailId['id'])){
+
+if (!selectFields('mail',$mail)){
     $_SESSION['errors'][] = 'Mail is registered';
     redirect('/register');
 }
@@ -68,9 +60,6 @@ MysqliConnection::save($user);
 
 
 
-
-
-
 ?>
 
-<div>hello regiset</div>
+<div>hello r</div>
