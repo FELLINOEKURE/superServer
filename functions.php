@@ -44,15 +44,23 @@ function selectFields(string $field, string $postField): bool {
     return empty(($fieldId['id']));
 
 }
-function getPostFields(string $post): string
-{
-    if (empty($_SESSION[$post])){
-        return '';
-    }
-    $postField = implode('', $_SESSION[$post]);
-    $_SESSION[$post] = [];
-    return $postField;
 
+function saveFormData(): void
+{
+    $_SESSION['formData'] = $_POST;
+}
+function restoreFormData(): array
+{
+    $data = $_SESSION['formData'] ?? [];
+    unset($_SESSION['formData']);
+    return $data;
+}
+function addError(string $error): void
+{
+    $_SESSION['errors'][] = $error;
+}
+function hasErrors(): bool {
+    return !empty($_SESSION['errors']);
 }
 
 

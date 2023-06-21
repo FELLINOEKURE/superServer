@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Connection\MysqliConnection;
 use Connection\User;
-
+use Connection\UserManagement;
 
 
 if (!isPost())
@@ -13,21 +13,20 @@ redirect('/login');
 }
 $login = $_POST['login'] ?? null;
 $password = $_POST['password'] ?? null;
-$_SESSION['postLogin'][] = $_POST['login'];
 
-
-if (!($login &&  $password )){
-    $_SESSION['errors'][] = 'Please fill all the fields';
+if (empty($login)) {
+    addError('Please enter login');
+}
+if (empty($password)) {
+    addError('Please enter password');
+}
+if (hasErrors()) {
     redirect('/login');
 }
-if (selectFields('login',$login)){
-    $_SESSION['errors'][] = 'Login does not exist or entered incorrectly';
+if (!UserManagement::authorize($login, $password)) {
+    addError('Please check your credentials!');
     redirect('/login');
 }
 
-if (selectFields('password',$password)){
-    $_SESSION['errors'][] = 'Password does not exist or entered incorrectly';
-    redirect('/login');
-}
-$_SESSION['userLogin'] = $login;
-redirect('/homepage');
+
+
